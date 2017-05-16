@@ -1,34 +1,38 @@
 pragma solidity ^0.4.8;
 
+import "./SafeMath.sol";
+
 contract Splitter {
-  mapping (address => uint) splitterAddresses;
-  address public owner;
+  using SafeMath for uint;
+
+  mapping (address => uint) balances;
   address public alice;
   address public bob;
   address public carol;
 
   function getBalance(address userAddress) public returns(uint) {
-    return splitterAddresses[userAddress];
+    return balances[userAddress];
   }
 
   function Splitter(address aliceAddress, address bobAddress, address carolAddress) {
-    owner = msg.sender;
     alice = aliceAddress;
     bob = bobAddress;
     carol = carolAddress;
   }
 
-  function splitValue(uint _value, address sender) payable returns (bool) {
-    if (sender == alice) {
-      uint halfValue = _value / 2;
-      splitterAddresses[bob] += halfValue;
-      splitterAddresses[carol] += halfValue;
-    } else {
-      uint splitValueInThree = _value / 3;
+  function splitValue() payable returns (bool) {
+    uint value = msg.value;
 
-      splitterAddresses[alice] += splitValueInThree;
-      splitterAddresses[bob] += splitValueInThree;
-      splitterAddresses[carol] += splitValueInThree;
+    if (msg.sender == alice) {
+      uint halfValue = value.div(2);
+      balances[bob] = balances[bob].add(halfValue);
+      balances[carol] = balances[carol].add(halfValue);
+    } else {
+      uint splitValueInThree = value.div(3);
+
+      balances[alice] = balances[alice].add(splitValueInThree);
+      balances[bob] = balances[bob].add(splitValueInThree);
+      balances[carol] = balances[carol].add(splitValueInThree);
     }
 
     return true;

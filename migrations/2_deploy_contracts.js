@@ -1,3 +1,4 @@
+var SafeMath = artifacts.require("./SafeMath.sol");
 var Splitter = artifacts.require("./Splitter.sol");
 
 module.exports = function(deployer, network, accounts) {
@@ -5,5 +6,6 @@ module.exports = function(deployer, network, accounts) {
   bobAccount = accounts[1];
   carolAccount = accounts[2];
 
+  deployer.deploy(SafeMath)
   deployer.deploy(Splitter, aliceAccount, bobAccount, carolAccount);
 };
