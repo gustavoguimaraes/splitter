@@ -38,6 +38,10 @@ contract Splitter {
     return true;
   }
 
+  function () {
+    throw;
+  }
+
   function killContract()  {
     selfdestruct(msg.sender);
   }

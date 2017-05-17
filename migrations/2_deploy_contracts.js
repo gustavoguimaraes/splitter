@@ -7,5 +7,6 @@ module.exports = function(deployer, network, accounts) {
   carolAccount = accounts[2];
 
   deployer.deploy(SafeMath)
+  deployer.link(SafeMath, Splitter)
   deployer.deploy(Splitter, aliceAccount, bobAccount, carolAccount);
 };

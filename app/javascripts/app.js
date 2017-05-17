@@ -37,8 +37,8 @@ window.App = {
     const sendEtherToSplit = (address, user) => {
       Splitter.deployed()
         .then(deployer => deployer.splitValue.sendTransaction({ from: address, value: web3.toWei(amount, "ether") }))
-        .then(() => {
-          self.setStatus('Transaction Complete')
+        .then((txHash) => {
+          self.setStatus('Transaction Posted ' + txHash)
           self.fetchAllUsersBalances()
         })
         .catch((e) => {
@@ -56,7 +56,7 @@ window.App = {
       .then(deployer => deployer.getBalance.call(address))
       .then((result) => {
         const balanceElement = document.getElementById(user)
-        balanceElement.innerHTML = web3.fromWei(result, 'ether').toString()
+        balanceElement.innerHTML = web3.fromWei(result, 'ether').toString(10)
       })
       .catch((e) => {
         console.log(e)
